@@ -184,3 +184,19 @@
 [data-starwars="true"] .home-subtitle::after {
     content: ' ⚔️ May the Force be with you!';
 }
+
+/* ===== Dinosaur Home Theme Override ===== */
+[data-dino="true"] .home-title {
+    background: linear-gradient(135deg, #4caf50, #ff9800, #8bc34a);
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+[data-dino="true"] .start-button {
+    background: linear-gradient(135deg, #2e7d32, #689f38);
+    box-shadow: 0 4px 20px rgba(46, 125, 50, 0.4);
+}
+
+[data-dino="true"] .home-subtitle::after {
+    content: ' 🦕 Roar into adventure!';
+}

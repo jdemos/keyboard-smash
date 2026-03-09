@@ -3,6 +3,7 @@
 const Game = {
     active: false,
     starWarsMode: false,
+    dinoMode: false,
     effectsLayer: null,
     canvas: null,
     ctx: null,
@@ -14,6 +15,7 @@ const Game = {
         this.ctx = this.canvas.getContext('2d');
         Effects.init(this.effectsLayer);
         StarWarsEffects.init(this.effectsLayer);
+        DinosaurEffects.init(this.effectsLayer);
         this._resizeCanvas();
         window.addEventListener('resize', () => this._resizeCanvas());
     },
@@ -23,14 +25,17 @@ const Game = {
         this.canvas.height = window.innerHeight;
     },
 
-    start(starWarsMode) {
+    start(starWarsMode, dinoMode) {
         this.active = true;
         this.starWarsMode = starWarsMode;
+        this.dinoMode = dinoMode;
         this._enterFullscreen();
         this._bindEvents();
 
         if (starWarsMode) {
             StarWarsEffects.createStarfield();
+        } else if (dinoMode) {
+            DinosaurEffects.createJungle();
         }
     },
 
@@ -42,12 +47,14 @@ const Game = {
 
         if (this.starWarsMode) {
             StarWarsEffects.removeStarfield();
+        } else if (this.dinoMode) {
+            DinosaurEffects.removeJungle();
         }
     },
 
     _cleanup() {
-        // Remove all effect elements except starfield (handled separately)
-        const effects = this.effectsLayer.querySelectorAll(':not(.starfield-star)');
+        // Remove all effect elements except persistent backgrounds (handled separately)
+        const effects = this.effectsLayer.querySelectorAll(':not(.starfield-star):not(.jungle-bg-element)');
         effects.forEach(el => el.remove());
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     },
@@ -80,7 +87,9 @@ const Game = {
     },
 
     _getEffectEngine() {
-        return this.starWarsMode ? StarWarsEffects : Effects;
+        if (this.starWarsMode) return StarWarsEffects;
+        if (this.dinoMode) return DinosaurEffects;
+        return Effects;
     },
 
     // ===== Event Handlers =====
