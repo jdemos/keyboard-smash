@@ -258,3 +258,24 @@
     75% { transform: translateY(50vh); }
     100% { transform: translateY(100vh); opacity: 0; }
 }
+
+/* LEO spacebar Easter egg */
+.effect-leo-letter {
+    position: absolute;
+    font-size: 20vw;
+    font-weight: 900;
+    pointer-events: none;
+    animation: leoLetterPop 2.5s ease-out forwards;
+    text-shadow: 0 0 30px currentColor, 0 0 60px currentColor;
+    z-index: 50;
+    line-height: 1;
+}
+
+@keyframes leoLetterPop {
+    0%   { transform: translate(-50%, -50%) scale(0) rotate(-20deg); opacity: 0; }
+    15%  { transform: translate(-50%, -50%) scale(1.3) rotate(8deg);  opacity: 1; }
+    30%  { transform: translate(-50%, -50%) scale(0.9) rotate(-3deg); opacity: 1; }
+    50%  { transform: translate(-50%, -50%) scale(1)   rotate(0deg);  opacity: 1; }
+    80%  { transform: translate(-50%, -50%) scale(1)   rotate(0deg);  opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1.2) rotate(0deg);  opacity: 0; }
+}
