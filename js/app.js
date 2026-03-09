@@ -15,7 +15,7 @@ const App = {
     startGame() {
         this.homeScreen.classList.remove('active');
         this.gameScreen.classList.add('active');
-        Game.start(Home.isStarWarsEnabled());
+        Game.start(Home.isStarWarsEnabled(), Home.isDinoEnabled());
     },
 
     showHome() {
