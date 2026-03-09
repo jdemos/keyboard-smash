@@ -4,6 +4,22 @@
     z-index: 10;
 }
 
+/* Top bar with light/dark toggle */
+.home-top-bar {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 20;
+}
+
+.theme-toggle-label {
+    font-size: 1.3rem;
+    line-height: 1;
+}
+
 .home-container {
     max-width: 600px;
     width: 90%;
@@ -107,6 +123,17 @@
     padding: 16px 24px;
     margin-bottom: 28px;
     box-shadow: 0 2px 8px var(--shadow);
+}
+
+.settings-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
 }
 
 .setting-row {

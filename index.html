@@ -15,6 +15,13 @@
 <body>
     <!-- Home Screen -->
     <div id="home-screen" class="screen active">
+        <div class="home-top-bar">
+            <label class="toggle-switch" title="Toggle Light / Dark Mode" aria-label="Toggle Light / Dark Mode">
+                <input type="checkbox" id="theme-toggle">
+                <span class="toggle-slider theme-slider"></span>
+            </label>
+            <span class="theme-toggle-label" id="theme-icon">☀️</span>
+        </div>
         <div class="home-container">
             <div class="home-header">
                 <h1 class="home-title">🎨 Keyboard Smash!</h1>
@@ -46,16 +53,7 @@
             </div>
 
             <div class="home-settings">
-                <div class="setting-row">
-                    <label class="setting-label" for="theme-toggle">
-                        <span class="setting-icon" id="theme-icon">☀️</span>
-                        <span>Light / Dark Mode</span>
-                    </label>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="theme-toggle">
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
+                <h2 class="settings-title">🎮 Game Theme</h2>
                 <div class="setting-row">
                     <label class="setting-label" for="starwars-toggle">
                         <span class="setting-icon">⚔️</span>
