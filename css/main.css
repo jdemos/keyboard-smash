@@ -58,6 +58,7 @@ html, body {
     -webkit-user-select: none;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
 }
 
 /* ===== Screen Management ===== */
