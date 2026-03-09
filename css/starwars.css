@@ -1,0 +1,149 @@
+/* ===== Star Wars Theme ===== */
+
+/* Star field background */
+[data-starwars="true"] #game-screen {
+    background: radial-gradient(ellipse at center, #0a0a1a 0%, #000005 100%);
+}
+
+/* Lightsaber slash */
+.effect-saber {
+    position: absolute;
+    pointer-events: none;
+    width: 6px;
+    border-radius: 3px;
+    animation: saberSlash 0.6s ease-out forwards;
+    box-shadow: 0 0 15px var(--saber-color, #4fc3f7),
+                0 0 30px var(--saber-color, #4fc3f7),
+                0 0 60px var(--saber-color, #4fc3f7);
+}
+
+@keyframes saberSlash {
+    0% { transform: rotate(var(--saber-angle, -45deg)) scaleY(0); opacity: 1; }
+    30% { transform: rotate(var(--saber-angle, -45deg)) scaleY(1); opacity: 1; }
+    100% { transform: rotate(var(--saber-angle, -45deg)) scaleY(1); opacity: 0; }
+}
+
+/* Hyperspace */
+.effect-hyperspace-line {
+    position: absolute;
+    background: white;
+    border-radius: 2px;
+    pointer-events: none;
+    animation: hyperspaceStretch var(--duration, 0.8s) ease-in forwards;
+    transform-origin: center center;
+}
+
+@keyframes hyperspaceStretch {
+    0% { transform: scaleX(1); opacity: 0.8; width: 2px; }
+    100% { transform: scaleX(30); opacity: 0; width: 4px; }
+}
+
+/* Ship flyby */
+.effect-ship {
+    position: absolute;
+    pointer-events: none;
+    font-size: 40px;
+    animation: shipFly var(--duration, 1.5s) linear forwards;
+}
+
+@keyframes shipFly {
+    0% { transform: translateX(var(--start-x, -100px)) rotate(var(--ship-angle, 0deg)); opacity: 1; }
+    100% { transform: translateX(var(--end-x, 100vw)) rotate(var(--ship-angle, 0deg)); opacity: 1; }
+}
+
+/* Force push */
+.effect-force-ring {
+    position: absolute;
+    border: 4px solid rgba(100, 180, 255, 0.6);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: forcePush 0.8s ease-out forwards;
+    box-shadow: 0 0 20px rgba(100, 180, 255, 0.3), inset 0 0 20px rgba(100, 180, 255, 0.1);
+}
+
+@keyframes forcePush {
+    0% { width: 0; height: 0; opacity: 1; }
+    100% { width: 500px; height: 500px; opacity: 0; margin: -250px; }
+}
+
+/* Death Star beam */
+.effect-deathstar-beam {
+    position: absolute;
+    height: 6px;
+    background: linear-gradient(90deg, transparent, #4cff4c, #00ff00, #4cff4c, transparent);
+    pointer-events: none;
+    animation: deathstarFire 0.8s ease-out forwards;
+    box-shadow: 0 0 20px #00ff00, 0 0 40px #00ff00;
+}
+
+@keyframes deathstarFire {
+    0% { width: 0; opacity: 1; }
+    30% { width: 100vw; opacity: 1; }
+    100% { width: 100vw; opacity: 0; }
+}
+
+/* Star Wars key glow */
+.effect-sw-key {
+    position: absolute;
+    font-size: 120px;
+    font-weight: 900;
+    pointer-events: none;
+    animation: swKeyGlow 1.2s ease-out forwards;
+    text-shadow: 0 0 10px var(--saber-color, #4fc3f7),
+                 0 0 20px var(--saber-color, #4fc3f7),
+                 0 0 40px var(--saber-color, #4fc3f7),
+                 0 0 80px var(--saber-color, #4fc3f7);
+    z-index: 10;
+}
+
+@keyframes swKeyGlow {
+    0% { transform: scale(0) rotate(-10deg); opacity: 1; }
+    30% { transform: scale(1.2) rotate(3deg); opacity: 1; }
+    100% { transform: scale(1.8) rotate(0deg); opacity: 0; }
+}
+
+/* Blaster bolt */
+.effect-blaster {
+    position: absolute;
+    width: 20px;
+    height: 4px;
+    border-radius: 2px;
+    pointer-events: none;
+    animation: blasterFly var(--duration, 0.5s) linear forwards;
+}
+
+@keyframes blasterFly {
+    0% { transform: translate(0, 0); opacity: 1; }
+    100% { transform: translate(var(--tx, 500px), var(--ty, 0)); opacity: 0.8; }
+}
+
+/* Character silhouette */
+.effect-character {
+    position: absolute;
+    font-size: 150px;
+    pointer-events: none;
+    animation: characterAppear 2s ease-out forwards;
+    filter: drop-shadow(0 0 20px rgba(100, 180, 255, 0.5));
+    z-index: 5;
+}
+
+@keyframes characterAppear {
+    0% { transform: scale(0.5); opacity: 0; }
+    20% { transform: scale(1.1); opacity: 0.9; }
+    60% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 0; }
+}
+
+/* Star field particles (persistent background) */
+.starfield-star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: starTwinkle var(--duration, 3s) ease-in-out infinite;
+}
+
+@keyframes starTwinkle {
+    0%, 100% { opacity: var(--base-opacity, 0.5); }
+    50% { opacity: 1; }
+}

@@ -1,0 +1,186 @@
+/* ===== Home Screen ===== */
+#home-screen {
+    background: var(--bg-primary);
+    z-index: 10;
+}
+
+.home-container {
+    max-width: 600px;
+    width: 90%;
+    padding: 40px 30px;
+    text-align: center;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Header */
+.home-title {
+    font-size: clamp(2rem, 6vw, 3.2rem);
+    font-weight: 800;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, var(--accent), #ff6b6b, #feca57, #48dbfb);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s ease-in-out infinite;
+    background-size: 200% 200%;
+}
+
+@keyframes shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+.home-subtitle {
+    font-size: clamp(1rem, 3vw, 1.3rem);
+    color: var(--text-secondary);
+    margin-bottom: 30px;
+}
+
+/* Feature Cards */
+.feature-cards {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.feature-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 2px 8px var(--shadow);
+    min-width: 120px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.feature-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px var(--shadow-lg);
+}
+
+.feature-icon {
+    font-size: 2rem;
+}
+
+.feature-text {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* Description */
+.home-info {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+}
+
+.home-parent-note {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-bottom: 28px;
+}
+
+/* Settings */
+.home-settings {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px 24px;
+    margin-bottom: 28px;
+    box-shadow: 0 2px 8px var(--shadow);
+}
+
+.setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+}
+
+.setting-row + .setting-row {
+    border-top: 1px solid var(--border);
+}
+
+.setting-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.setting-icon {
+    font-size: 1.3rem;
+}
+
+/* Start Button */
+.start-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 48px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: white;
+    background: linear-gradient(135deg, var(--accent), #ff6b6b);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px var(--accent-glow);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.start-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 30px var(--accent-glow);
+}
+
+.start-button:active {
+    transform: scale(0.98);
+}
+
+@keyframes pulse {
+    0%, 100% { box-shadow: 0 4px 20px var(--accent-glow); }
+    50% { box-shadow: 0 4px 40px var(--accent-glow), 0 0 60px var(--accent-glow); }
+}
+
+.start-icon {
+    font-size: 1.5rem;
+}
+
+/* ===== Star Wars Home Theme Override ===== */
+[data-starwars="true"] .home-title {
+    background: linear-gradient(135deg, #ffe81f, #ff6b35, #ffe81f);
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+[data-starwars="true"] .start-button {
+    background: linear-gradient(135deg, #1a3a5c, #2d6a9f);
+    box-shadow: 0 4px 20px rgba(45, 106, 159, 0.4);
+}
+
+[data-starwars="true"] .home-subtitle::after {
+    content: ' ⚔️ May the Force be with you!';
+}

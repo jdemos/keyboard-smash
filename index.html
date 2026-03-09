@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="A fun fullscreen game for toddlers — press any key or click anywhere to see colorful animations!">
+    <title>Keyboard Smash!</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎨</text></svg>">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/game.css">
+    <link rel="stylesheet" href="css/starwars.css">
+</head>
+<body>
+    <!-- Home Screen -->
+    <div id="home-screen" class="screen active">
+        <div class="home-container">
+            <div class="home-header">
+                <h1 class="home-title">🎨 Keyboard Smash!</h1>
+                <p class="home-subtitle">A colorful playground for tiny fingers</p>
+            </div>
+
+            <div class="home-description">
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <span class="feature-icon">⌨️</span>
+                        <span class="feature-text">Press any key</span>
+                    </div>
+                    <div class="feature-card">
+                        <span class="feature-icon">🖱️</span>
+                        <span class="feature-text">Click anywhere</span>
+                    </div>
+                    <div class="feature-card">
+                        <span class="feature-icon">✨</span>
+                        <span class="feature-text">See magic happen</span>
+                    </div>
+                </div>
+                <p class="home-info">
+                    Let your toddler explore! Every key press and mouse click creates beautiful animations. 
+                    The game runs fullscreen so little fingers can't accidentally close anything.
+                </p>
+                <p class="home-parent-note">
+                    <strong>Parents:</strong> Press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Escape</kbd> to exit fullscreen.
+                </p>
+            </div>
+
+            <div class="home-settings">
+                <div class="setting-row">
+                    <label class="setting-label" for="theme-toggle">
+                        <span class="setting-icon" id="theme-icon">☀️</span>
+                        <span>Light / Dark Mode</span>
+                    </label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="theme-toggle">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="setting-row">
+                    <label class="setting-label" for="starwars-toggle">
+                        <span class="setting-icon">⚔️</span>
+                        <span>Star Wars Theme</span>
+                    </label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="starwars-toggle">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <button id="start-btn" class="start-button">
+                <span class="start-text">Start Playing!</span>
+                <span class="start-icon">🚀</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="screen">
+        <canvas id="game-canvas"></canvas>
+        <div id="effects-layer"></div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/effects.js"></script>
+    <script src="js/starwars.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/home.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
