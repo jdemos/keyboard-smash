@@ -3,6 +3,7 @@
     background: var(--game-bg);
     cursor: crosshair;
     overflow: hidden;
+    touch-action: none;
 }
 
 #game-canvas {

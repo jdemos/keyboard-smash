@@ -141,6 +141,34 @@ const Game = {
         if (this.active) e.preventDefault();
     },
 
+    _onTouchStart(e) {
+        if (!this.active) return;
+        e.preventDefault();
+        // Trigger a click effect for each finger
+        for (const touch of e.changedTouches) {
+            this._getEffectEngine().onClick(touch.clientX, touch.clientY);
+        }
+    },
+
+    _onTouchMove(e) {
+        if (!this.active) return;
+        e.preventDefault();
+
+        const now = Date.now();
+        if (now - this.moveThrottle < 33) return;
+        this.moveThrottle = now;
+
+        // Trail effect for each active finger
+        for (const touch of e.touches) {
+            this._getEffectEngine().onMove(touch.clientX, touch.clientY);
+        }
+    },
+
+    _onTouchEnd(e) {
+        if (!this.active) return;
+        e.preventDefault();
+    },
+
     // ===== Event Binding =====
 
     _boundHandlers: {},
@@ -152,6 +180,9 @@ const Game = {
             mousemove: (e) => this._onMouseMove(e),
             wheel: (e) => this._onWheel(e),
             contextmenu: (e) => this._onContextMenu(e),
+            touchstart: (e) => this._onTouchStart(e),
+            touchmove: (e) => this._onTouchMove(e),
+            touchend: (e) => this._onTouchEnd(e),
             fullscreenchange: () => this._handleFullscreenChange(),
         };
 
