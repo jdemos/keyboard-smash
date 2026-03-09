@@ -147,3 +147,12 @@
     0%, 100% { opacity: var(--base-opacity, 0.5); }
     50% { opacity: 1; }
 }
+
+/* LEO spacebar Easter egg - Star Wars variant (lightsaber glow) */
+.effect-leo-letter-sw {
+    text-shadow:
+        0 0 20px var(--saber-color, #4fc3f7),
+        0 0 40px var(--saber-color, #4fc3f7),
+        0 0 80px var(--saber-color, #4fc3f7),
+        0 0 160px var(--saber-color, #4fc3f7);
+}

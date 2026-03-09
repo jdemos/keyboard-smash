@@ -27,6 +27,12 @@ const StarWarsEffects = {
 
     // Dispatch a random key effect
     onKey(e) {
+        // Spacebar Easter egg: display "LEO" in big glowing letters
+        if (e.key === ' ') {
+            this.spacebarLEO();
+            return;
+        }
+
         const char = Utils.keyToDisplay(e);
         const pos = Utils.randomPosition();
 
@@ -186,6 +192,26 @@ const StarWarsEffects = {
             transform: 'translate(-50%, -50%)',
         }, this.layer, 2000);
         el.textContent = character;
+    },
+
+    spacebarLEO() {
+        const letters = ['L', 'E', 'O'];
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const xPositions = [vw * 0.2, vw * 0.5, vw * 0.8];
+
+        letters.forEach((letter, i) => {
+            const color = Utils.pick(this.saberColors);
+            setTimeout(() => {
+                const el = Utils.createEffect('effect-leo-letter effect-leo-letter-sw', {
+                    left: xPositions[i] + 'px',
+                    top: (vh / 2) + 'px',
+                    color: color,
+                    '--saber-color': color,
+                }, this.layer, 2500);
+                el.textContent = letter;
+            }, i * 200);
+        });
     },
 
     robotEmoji(pos) {
