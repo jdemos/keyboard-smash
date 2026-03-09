@@ -29,6 +29,11 @@ const Effects = {
         // Always show the character
         this.letterBurst(char, pos);
 
+        // R key Easter egg: always show the robot emoji
+        if (e.key === 'r' || e.key === 'R') {
+            this.robotEmoji(pos);
+        }
+
         // Plus a random additional effect
         const effect = Utils.pick(this.keyEffects);
         if (effect !== 'letterBurst') {
@@ -278,6 +283,15 @@ const Effects = {
             transform: 'translate(-50%, -50%)',
         }, this.layer, 2000);
         el.textContent = flower;
+    },
+
+    robotEmoji(pos) {
+        const el = Utils.createEffect('effect-robot', {
+            left: pos.x + 'px',
+            top: pos.y + 'px',
+            transform: 'translate(-50%, -50%)',
+        }, this.layer, 2000);
+        el.textContent = '🤖';
     },
 
     spinningStars() {

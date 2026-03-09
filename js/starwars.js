@@ -33,6 +33,11 @@ const StarWarsEffects = {
         // Always show the glowing character
         this.glowingLetter(char, pos);
 
+        // R key Easter egg: always show the robot emoji
+        if (e.key === 'r' || e.key === 'R') {
+            this.robotEmoji(pos);
+        }
+
         // Plus a random Star Wars effect
         const effect = Utils.pick(this.keyEffects);
         this[effect](char, pos);
@@ -181,6 +186,15 @@ const StarWarsEffects = {
             transform: 'translate(-50%, -50%)',
         }, this.layer, 2000);
         el.textContent = character;
+    },
+
+    robotEmoji(pos) {
+        const el = Utils.createEffect('effect-robot', {
+            left: pos.x + 'px',
+            top: pos.y + 'px',
+            transform: 'translate(-50%, -50%)',
+        }, this.layer, 2000);
+        el.textContent = '🤖';
     },
 
     blasterBolts(char, pos) {
