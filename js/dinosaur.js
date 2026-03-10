@@ -10,18 +10,20 @@ const DinosaurEffects = {
 
     dinoColors: ['#4caf50', '#8bc34a', '#ff9800', '#795548', '#ff5722', '#cddc39', '#2e7d32'],
 
-    dinos: ['🦕', '🦖', '🐊'],
-    babies: ['🐣', '🐥', '🦎', '🐢'],
-    foliage: ['🌿', '🍃', '🌴', '🍀', '☘️', '🌱', '🪴'],
+    dinos: ['🦕', '🦖', '🐊', '🐉', '🦎'],
+    babies: ['🐣', '🐥', '🐢', '🐊'],
+    foliage: ['🌿', '🍃', '🌴', '🍀', '☘️', '🌱', '🪴', '🎋', '🌾'],
     fossils: ['🦴', '💀', '🦷'],
 
     keyEffects: [
         'dinoStomp', 'volcanoEruption', 'dinoCharge',
-        'eggHatch', 'fossilDig', 'jungleLeafRain', 'pterodactylFlyby'
+        'eggHatch', 'fossilDig', 'jungleLeafRain', 'pterodactylFlyby',
+        'dinoRoar', 'dinoHerd', 'swampBubble'
     ],
 
     clickEffects: [
-        'meteorStrike', 'fossilDig', 'dinoStomp', 'volcanoEruption'
+        'meteorStrike', 'fossilDig', 'dinoStomp', 'volcanoEruption',
+        'dinoRoar', 'swampBubble'
     ],
 
     moveEffects: ['footprintTrail'],
@@ -282,6 +284,79 @@ const DinosaurEffects = {
             '--paw-angle': angle + 'deg',
         }, this.layer, 1200);
         el.textContent = '🐾';
+    },
+
+    dinoRoar(char, pos) {
+        // Big dinosaur roars with expanding sound-wave rings
+        const roarer = Utils.pick(['🦖', '🦕', '🐉']);
+        const el = Utils.createEffect('effect-dino-roar', {
+            left: pos.x + 'px',
+            top: pos.y + 'px',
+        }, this.layer, 2000);
+        el.textContent = roarer;
+
+        for (let i = 0; i < 4; i++) {
+            const wave = Utils.createEffect('effect-roar-wave', {
+                left: pos.x + 'px',
+                top: pos.y + 'px',
+                animationDelay: (i * 0.18) + 's',
+            }, this.layer, 1800);
+            wave.style.borderColor = Utils.pick(['rgba(255,150,0,0.7)', 'rgba(255,80,0,0.6)', 'rgba(139,90,43,0.6)']);
+        }
+    },
+
+    dinoHerd(char, pos) {
+        // A stampede of dinos charges across the screen
+        const count = Utils.randomInt(3, 6);
+        const goingRight = Math.random() > 0.5;
+
+        for (let i = 0; i < count; i++) {
+            setTimeout(() => {
+                const dino = Utils.pick(this.dinos);
+                const y = Utils.randomInt(
+                    Math.floor(window.innerHeight * 0.25),
+                    Math.floor(window.innerHeight * 0.80)
+                );
+                const duration = Utils.randomFloat(1.2, 2.2);
+
+                const el = Utils.createEffect('effect-dino-charge', {
+                    left: goingRight ? '-120px' : (window.innerWidth + 120) + 'px',
+                    top: y + 'px',
+                    '--start-x': '0px',
+                    '--end-x': goingRight
+                        ? (window.innerWidth + 240) + 'px'
+                        : -(window.innerWidth + 240) + 'px',
+                    '--dir': goingRight ? '1' : '-1',
+                    '--duration': duration + 's',
+                }, this.layer, duration * 1000);
+                el.textContent = dino;
+            }, i * 220);
+        }
+    },
+
+    swampBubble() {
+        // Prehistoric bubbles rise from the bottom, some carrying creatures
+        const swampCreatures = ['🐊', '🦎', '🐸', '🦕', '🐢', '🐉'];
+        for (let i = 0; i < 8; i++) {
+            const x = Utils.randomInt(40, window.innerWidth - 40);
+            const size = Utils.randomInt(24, 56);
+            const duration = Utils.randomFloat(1.8, 3.8);
+            const useCreature = Math.random() > 0.45;
+
+            const el = Utils.createEffect('effect-swamp-bubble', {
+                left: x + 'px',
+                top: window.innerHeight + 'px',
+                width: size + 'px',
+                height: size + 'px',
+                '--duration': duration + 's',
+                animationDelay: Utils.randomFloat(0, 0.9) + 's',
+            }, this.layer, (duration + 0.9) * 1000 + 200);
+
+            if (useCreature) {
+                el.style.fontSize = Math.max(14, Math.floor(size * 0.75)) + 'px';
+                el.textContent = Utils.pick(swampCreatures);
+            }
+        }
     },
 
     spacebarLEO() {
