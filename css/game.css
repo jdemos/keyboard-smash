@@ -280,3 +280,28 @@
     80%  { transform: translate(-50%, -50%) scale(1)   rotate(0deg);  opacity: 1; }
     100% { transform: translate(-50%, -50%) scale(1.2) rotate(0deg);  opacity: 0; }
 }
+
+/* ===== Mobile Effect Scaling ===== */
+@media (max-width: 480px) {
+    .effect-key,
+    .effect-sw-key,
+    .effect-dino-key {
+        font-size: 70px;
+    }
+
+    .effect-leo-letter {
+        font-size: 25vw;
+    }
+
+    .effect-character {
+        font-size: 90px;
+    }
+
+    .effect-emoji {
+        font-size: 32px;
+    }
+
+    .effect-flower {
+        font-size: 8px;
+    }
+}

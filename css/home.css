@@ -2,11 +2,13 @@
 #home-screen {
     background: var(--bg-primary);
     z-index: 10;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* Top bar with light/dark toggle */
 .home-top-bar {
-    position: absolute;
+    position: fixed;
     top: 16px;
     right: 20px;
     display: flex;
@@ -226,4 +228,127 @@
 
 [data-dino="true"] .home-subtitle::after {
     content: ' 🦕 Roar into adventure!';
+}
+
+/* ===== Mobile Responsive ===== */
+@media (max-width: 480px) {
+    .home-container {
+        padding: 24px 16px;
+        width: 95%;
+    }
+
+    .home-title {
+        font-size: clamp(1.6rem, 8vw, 2.4rem);
+    }
+
+    .home-subtitle {
+        font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+        margin-bottom: 20px;
+    }
+
+    .feature-cards {
+        gap: 10px;
+        margin-bottom: 16px;
+    }
+
+    .feature-card {
+        padding: 12px 14px;
+        min-width: 90px;
+        border-radius: 12px;
+    }
+
+    .feature-icon {
+        font-size: 1.5rem;
+    }
+
+    .feature-text {
+        font-size: 0.78rem;
+    }
+
+    .home-info {
+        font-size: 0.88rem;
+        margin-bottom: 8px;
+    }
+
+    .home-parent-note {
+        font-size: 0.78rem;
+        margin-bottom: 20px;
+    }
+
+    .home-settings {
+        padding: 12px 16px;
+        margin-bottom: 20px;
+        border-radius: 12px;
+    }
+
+    .settings-title {
+        font-size: 0.78rem;
+    }
+
+    .setting-label {
+        font-size: 0.88rem;
+        gap: 8px;
+    }
+
+    .setting-icon {
+        font-size: 1.1rem;
+    }
+
+    .start-button {
+        padding: 16px 36px;
+        font-size: 1.1rem;
+        border-radius: 40px;
+    }
+
+    .start-icon {
+        font-size: 1.3rem;
+    }
+
+    .toggle-switch {
+        width: 44px;
+        height: 24px;
+    }
+
+    .toggle-slider::before {
+        height: 18px;
+        width: 18px;
+    }
+
+    .toggle-switch input:checked + .toggle-slider::before {
+        transform: translateX(20px);
+    }
+}
+
+/* Tall phones / small tablets in portrait */
+@media (max-height: 600px) {
+    .home-container {
+        padding: 16px 16px 24px;
+    }
+
+    .home-subtitle {
+        margin-bottom: 12px;
+    }
+
+    .feature-cards {
+        margin-bottom: 12px;
+    }
+
+    .home-info {
+        margin-bottom: 6px;
+    }
+
+    .home-parent-note {
+        margin-bottom: 16px;
+    }
+
+    .home-settings {
+        margin-bottom: 16px;
+    }
+}
+
+/* Tablet landscape */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .home-container {
+        max-width: 550px;
+    }
 }
