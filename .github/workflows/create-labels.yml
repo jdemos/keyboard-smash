@@ -1,5 +1,10 @@
 name: Create Labels
 on:
+  push:
+    branches:
+      - copilot/review-repository-for-improvements
+    paths:
+      - '.github/workflows/create-labels.yml'
   workflow_dispatch:
 jobs:
   create-labels:
