@@ -3,20 +3,45 @@
 const Audio = {
     ctx: null,
     muted: false,
+    _noiseBuffer: null,
 
     // Call inside a user gesture to create/resume AudioContext (browser autoplay policy)
     init() {
         if (this.ctx) {
             if (this.ctx.state === 'suspended') {
-                this.ctx.resume();
+                this.ctx.resume().catch(function () {});
             }
             return;
         }
         try {
             this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+            // Pre-fill the shared noise buffer now that we have a sample rate
+            this._buildNoiseBuffer();
         } catch (e) {
             // Web Audio API not supported — degrade silently
         }
+    },
+
+    // Build (or rebuild) a shared 0.5-second white-noise buffer.
+    // AudioBufferSourceNode reads the buffer without modifying it, so the same
+    // buffer can be safely reused across all noise-based sound effects.
+    _buildNoiseBuffer() {
+        const ctx = this.ctx;
+        const length = Math.ceil(ctx.sampleRate * 0.5);
+        const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < length; i++) {
+            data[i] = Math.random() * 2 - 1;
+        }
+        this._noiseBuffer = buffer;
+    },
+
+    // Returns the cached noise buffer, creating it if necessary.
+    _getNoiseBuffer() {
+        if (!this._noiseBuffer) {
+            this._buildNoiseBuffer();
+        }
+        return this._noiseBuffer;
     },
 
     _isReady() {
@@ -134,14 +159,8 @@ const Audio = {
         const now = ctx.currentTime;
         const duration = 0.08;
 
-        const buffer = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * duration), ctx.sampleRate);
-        const data = buffer.getChannelData(0);
-        for (let i = 0; i < data.length; i++) {
-            data[i] = Math.random() * 2 - 1;
-        }
-
         const noise = ctx.createBufferSource();
-        noise.buffer = buffer;
+        noise.buffer = this._getNoiseBuffer();
 
         const filter = ctx.createBiquadFilter();
         filter.type = 'bandpass';
@@ -221,14 +240,8 @@ const Audio = {
         const now = ctx.currentTime;
         const duration = 0.12;
 
-        const buffer = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * duration), ctx.sampleRate);
-        const data = buffer.getChannelData(0);
-        for (let i = 0; i < data.length; i++) {
-            data[i] = Math.random() * 2 - 1;
-        }
-
         const noise = ctx.createBufferSource();
-        noise.buffer = buffer;
+        noise.buffer = this._getNoiseBuffer();
 
         const filter = ctx.createBiquadFilter();
         filter.type = 'bandpass';
@@ -278,14 +291,8 @@ const Audio = {
         const now = ctx.currentTime;
         const duration = 0.35;
 
-        const buffer = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * duration), ctx.sampleRate);
-        const data = buffer.getChannelData(0);
-        for (let i = 0; i < data.length; i++) {
-            data[i] = Math.random() * 2 - 1;
-        }
-
         const noise = ctx.createBufferSource();
-        noise.buffer = buffer;
+        noise.buffer = this._getNoiseBuffer();
 
         const filter = ctx.createBiquadFilter();
         filter.type = 'lowpass';
@@ -309,14 +316,8 @@ const Audio = {
         const now = ctx.currentTime;
         const duration = 0.06;
 
-        const buffer = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * duration), ctx.sampleRate);
-        const data = buffer.getChannelData(0);
-        for (let i = 0; i < data.length; i++) {
-            data[i] = Math.random() * 2 - 1;
-        }
-
         const noise = ctx.createBufferSource();
-        noise.buffer = buffer;
+        noise.buffer = this._getNoiseBuffer();
 
         const filter = ctx.createBiquadFilter();
         filter.type = 'peaking';
