@@ -92,6 +92,12 @@ const Game = {
         return Effects;
     },
 
+    _getMode() {
+        if (this.starWarsMode) return 'starwars';
+        if (this.dinoMode) return 'dino';
+        return 'default';
+    },
+
     // ===== Event Handlers =====
 
     _onKeyDown(e) {
@@ -108,12 +114,16 @@ const Game = {
         e.preventDefault();
         e.stopPropagation();
 
+        Audio.init();
+        Audio.playKey(this._getMode());
         this._getEffectEngine().onKey(e);
     },
 
     _onMouseDown(e) {
         if (!this.active) return;
         e.preventDefault();
+        Audio.init();
+        Audio.playClick(this._getMode());
         this._getEffectEngine().onClick(e.clientX, e.clientY);
     },
 
@@ -125,6 +135,8 @@ const Game = {
         if (now - this.moveThrottle < 33) return;
         this.moveThrottle = now;
 
+        Audio.init();
+        Audio.playMove(this._getMode());
         this._getEffectEngine().onMove(e.clientX, e.clientY);
     },
 
@@ -144,6 +156,8 @@ const Game = {
     _onTouchStart(e) {
         if (!this.active) return;
         e.preventDefault();
+        Audio.init();
+        Audio.playClick(this._getMode());
         // Trigger a click effect for each finger
         for (const touch of e.changedTouches) {
             this._getEffectEngine().onClick(touch.clientX, touch.clientY);
@@ -158,6 +172,8 @@ const Game = {
         if (now - this.moveThrottle < 33) return;
         this.moveThrottle = now;
 
+        Audio.init();
+        Audio.playMove(this._getMode());
         // Trail effect for each active finger
         for (const touch of e.touches) {
             this._getEffectEngine().onMove(touch.clientX, touch.clientY);
