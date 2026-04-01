@@ -4,14 +4,18 @@ const Home = {
     themeToggle: null,
     starwarsToggle: null,
     dinoToggle: null,
+    muteToggle: null,
     themeIcon: null,
+    muteIcon: null,
     startBtn: null,
 
     init() {
         this.themeToggle = document.getElementById('theme-toggle');
         this.starwarsToggle = document.getElementById('starwars-toggle');
         this.dinoToggle = document.getElementById('dino-toggle');
+        this.muteToggle = document.getElementById('mute-toggle');
         this.themeIcon = document.getElementById('theme-icon');
+        this.muteIcon = document.getElementById('mute-icon');
         this.startBtn = document.getElementById('start-btn');
 
         // Load saved preferences
@@ -21,6 +25,7 @@ const Home = {
         this.themeToggle.addEventListener('change', () => this._onThemeChange());
         this.starwarsToggle.addEventListener('change', () => this._onStarWarsChange());
         this.dinoToggle.addEventListener('change', () => this._onDinoChange());
+        this.muteToggle.addEventListener('change', () => this._onMuteChange());
         this.startBtn.addEventListener('click', () => App.startGame());
     },
 
@@ -41,6 +46,11 @@ const Home = {
         this._applyTheme(darkMode);
         this._applyStarWars(this.starwarsToggle.checked);
         this._applyDino(this.dinoToggle.checked);
+
+        // Load mute preference (toggle ON = sound enabled, so muted = !checked)
+        const muted = Audio.loadMutePreference();
+        this.muteToggle.checked = !muted;
+        this._applyMute(muted);
     },
 
     _onThemeChange() {
@@ -71,6 +81,13 @@ const Home = {
         localStorage.setItem('keyboard-smash-dino', dino);
     },
 
+    _onMuteChange() {
+        // Toggle is ON when sound is enabled; muted is the inverse
+        const muted = !this.muteToggle.checked;
+        Audio.setMuted(muted);
+        this._applyMute(muted);
+    },
+
     _applyTheme(dark) {
         document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
         this.themeIcon.textContent = dark ? '🌙' : '☀️';
@@ -82,6 +99,10 @@ const Home = {
 
     _applyDino(enabled) {
         document.documentElement.setAttribute('data-dino', enabled);
+    },
+
+    _applyMute(muted) {
+        this.muteIcon.textContent = muted ? '🔇' : '🔊';
     },
 
     isStarWarsEnabled() {
