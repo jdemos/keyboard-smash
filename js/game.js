@@ -135,6 +135,7 @@ const Game = {
         if (now - this.moveThrottle < 33) return;
         this.moveThrottle = now;
 
+        Audio.init();
         Audio.playMove(this._getMode());
         this._getEffectEngine().onMove(e.clientX, e.clientY);
     },
@@ -171,6 +172,7 @@ const Game = {
         if (now - this.moveThrottle < 33) return;
         this.moveThrottle = now;
 
+        Audio.init();
         Audio.playMove(this._getMode());
         // Trail effect for each active finger
         for (const touch of e.touches) {
