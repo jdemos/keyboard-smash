@@ -85,4 +85,49 @@ const Utils = {
     emojis: ['🌟', '🎉', '🦄', '🌈', '🎈', '🍕', '🚀', '🎸', '🦋', '🌻', '🐱', '🐶', '🎪', '🍭', '🧸', '🎠', '🌊', '⭐', '💫', '🔥'],
 
     flowers: ['🌸', '🌺', '🌻', '🌹', '🌷', '💐', '🌼', '🏵️'],
+
+    // Easter egg: display "LEO" in big animated letters
+    // theme: 'default' | 'starwars' | 'dino'
+    spacebarLEO(layer, theme = 'default') {
+        const letters = ['L', 'E', 'O'];
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const xPositions = [vw * 0.2, vw * 0.5, vw * 0.8];
+        const saberColors = ['#4fc3f7', '#ff1744', '#76ff03', '#7c4dff', '#ffff00', '#ff9100'];
+        const dinoColors = ['#4caf50', '#ff9800', '#ff5722'];
+        const className = theme === 'starwars'
+            ? 'effect-leo-letter effect-leo-letter-sw'
+            : 'effect-leo-letter';
+
+        letters.forEach((letter, i) => {
+            const color = theme === 'starwars' ? Utils.pick(saberColors)
+                        : theme === 'dino'     ? dinoColors[i]
+                        : Utils.randomBrightColor();
+
+            setTimeout(() => {
+                const styles = {
+                    left: xPositions[i] + 'px',
+                    top: (vh / 2) + 'px',
+                    color: color,
+                };
+                if (theme === 'starwars') {
+                    styles['--saber-color'] = color;
+                } else if (theme === 'dino') {
+                    styles.textShadow = `0 0 20px ${color}, 0 0 40px ${color}`;
+                }
+                const el = Utils.createEffect(className, styles, layer, 2500);
+                el.textContent = letter;
+            }, i * 200);
+        });
+    },
+
+    // Easter egg: display the robot emoji at a given position
+    robotEmoji(pos, layer) {
+        const el = Utils.createEffect('effect-robot', {
+            left: pos.x + 'px',
+            top: pos.y + 'px',
+            transform: 'translate(-50%, -50%)',
+        }, layer, 2000);
+        el.textContent = '🤖';
+    },
 };

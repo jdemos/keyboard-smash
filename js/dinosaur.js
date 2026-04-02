@@ -31,7 +31,7 @@ const DinosaurEffects = {
     onKey(e) {
         // Spacebar Easter egg: display "LEO"
         if (e.key === ' ') {
-            this.spacebarLEO();
+            Utils.spacebarLEO(this.layer, 'dino');
             return;
         }
 
@@ -43,7 +43,7 @@ const DinosaurEffects = {
 
         // R key Easter egg: always show the robot emoji
         if (e.key === 'r' || e.key === 'R') {
-            this.robotEmoji(pos);
+            Utils.robotEmoji(pos, this.layer);
         }
 
         // Plus a random dino effect
@@ -359,32 +359,4 @@ const DinosaurEffects = {
         }
     },
 
-    spacebarLEO() {
-        const letters = ['L', 'E', 'O'];
-        const vw = window.innerWidth;
-        const vh = window.innerHeight;
-        const xPositions = [vw * 0.2, vw * 0.5, vw * 0.8];
-        const colors = ['#4caf50', '#ff9800', '#ff5722'];
-
-        letters.forEach((letter, i) => {
-            setTimeout(() => {
-                const el = Utils.createEffect('effect-leo-letter', {
-                    left: xPositions[i] + 'px',
-                    top: (vh / 2) + 'px',
-                    color: colors[i],
-                    textShadow: `0 0 20px ${colors[i]}, 0 0 40px ${colors[i]}`,
-                }, this.layer, 2500);
-                el.textContent = letter;
-            }, i * 200);
-        });
-    },
-
-    robotEmoji(pos) {
-        const el = Utils.createEffect('effect-robot', {
-            left: pos.x + 'px',
-            top: pos.y + 'px',
-            transform: 'translate(-50%, -50%)',
-        }, this.layer, 2000);
-        el.textContent = '🤖';
-    },
 };
