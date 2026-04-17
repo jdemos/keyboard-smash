@@ -30,11 +30,15 @@ jobs:
             };
 
             for (const [issue_number, issue_labels] of Object.entries(labels)) {
-              await github.rest.issues.addLabels({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: parseInt(issue_number),
-                labels: issue_labels,
-              });
-              console.log(`Added labels [${issue_labels}] to issue #${issue_number}`);
+              try {
+                await github.rest.issues.addLabels({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: parseInt(issue_number),
+                  labels: issue_labels,
+                });
+                console.log(`Added labels [${issue_labels}] to issue #${issue_number}`);
+              } catch (err) {
+                console.error(`Failed to label issue #${issue_number}: ${err.message}`);
+              }
             }
