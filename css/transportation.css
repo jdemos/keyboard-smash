@@ -1,0 +1,210 @@
+/* ===== Transportation Theme ===== */
+
+/* Road background */
+[data-transport="true"] #game-screen {
+    background: linear-gradient(180deg, #87ceeb 0%, #87ceeb 55%, #555 55%, #555 58%, #444 58%, #444 100%);
+}
+
+/* Road center-line dashes (persistent background) */
+.road-bg-element {
+    position: absolute;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+/* Transport key character */
+.effect-transport-key {
+    position: absolute;
+    font-size: 120px;
+    font-weight: 900;
+    pointer-events: none;
+    animation: transportKeyPop 1.2s ease-out forwards;
+    z-index: 10;
+}
+
+@keyframes transportKeyPop {
+    0%   { transform: translate(-50%, -50%) scale(0) rotate(-8deg); opacity: 1; }
+    18%  { transform: translate(-50%, -50%) scale(1.5) rotate(4deg); opacity: 1; }
+    35%  { transform: translate(-50%, -50%) scale(1)   rotate(-2deg); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1.4) rotate(0deg); opacity: 0; }
+}
+
+/* Car / vehicle driving across the screen */
+.effect-vehicle-drive {
+    position: absolute;
+    pointer-events: none;
+    font-size: 70px;
+    animation: vehicleDrive var(--duration, 1.8s) linear forwards;
+}
+
+@keyframes vehicleDrive {
+    0%   { transform: translateX(var(--start-x, -120px)) scaleX(var(--dir, 1)); }
+    100% { transform: translateX(var(--end-x, 110vw))   scaleX(var(--dir, 1)); }
+}
+
+/* Train charging across */
+.effect-train-ride {
+    position: absolute;
+    pointer-events: none;
+    font-size: 80px;
+    animation: trainRide var(--duration, 2s) linear forwards;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+}
+
+@keyframes trainRide {
+    0%   { transform: translateX(var(--start-x, -160px)) scaleX(var(--dir, 1)); }
+    5%   { transform: translateX(var(--start-x, -160px)) scaleX(var(--dir, 1)) translateY(-6px); }
+    10%  { transform: translateX(var(--start-x, -160px)) scaleX(var(--dir, 1)) translateY(0); }
+    100% { transform: translateX(var(--end-x, 110vw))   scaleX(var(--dir, 1)); }
+}
+
+/* Honk / horn sound-wave rings */
+.effect-honk-wave {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(255, 200, 0, 0.7);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(0);
+    animation: honkWave 0.9s ease-out forwards;
+}
+
+@keyframes honkWave {
+    0%   { transform: translate(-50%, -50%) scale(0);   opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(5);   opacity: 0; }
+}
+
+/* Traffic light appearing */
+.effect-traffic-light {
+    position: absolute;
+    pointer-events: none;
+    font-size: 90px;
+    animation: trafficLightPop 1.5s ease-out forwards;
+    transform-origin: bottom center;
+}
+
+@keyframes trafficLightPop {
+    0%   { transform: translate(-50%, -50%) scale(0) rotate(-15deg); opacity: 0; }
+    20%  { transform: translate(-50%, -50%) scale(1.3) rotate(5deg);  opacity: 1; }
+    40%  { transform: translate(-50%, -50%) scale(0.9) rotate(-3deg); opacity: 1; }
+    70%  { transform: translate(-50%, -50%) scale(1)   rotate(0deg);  opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1.1) rotate(0deg);  opacity: 0; }
+}
+
+/* Rocket launch */
+.effect-rocket-launch {
+    position: absolute;
+    pointer-events: none;
+    font-size: 70px;
+    animation: rocketLaunch var(--duration, 2s) ease-in forwards;
+}
+
+@keyframes rocketLaunch {
+    0%   { transform: translate(-50%, -50%) translateY(0) rotate(-10deg); opacity: 1; }
+    10%  { transform: translate(-50%, -50%) translateY(20px) rotate(5deg); opacity: 1; }
+    20%  { transform: translate(-50%, -50%) translateY(-30px) rotate(-3deg); opacity: 1; }
+    100% { transform: translate(-50%, -50%) translateY(var(--fly-y, -120vh)) rotate(0deg); opacity: 0; }
+}
+
+/* Exhaust / smoke particle */
+.effect-exhaust {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: exhaustPuff var(--duration, 1.2s) ease-out forwards;
+}
+
+@keyframes exhaustPuff {
+    0%   { transform: translate(0, 0) scale(0.5); opacity: 0.8; }
+    50%  { opacity: 0.4; }
+    100% { transform: translate(var(--tx, -40px), var(--ty, -60px)) scale(1.5); opacity: 0; }
+}
+
+/* Helicopter flyby */
+.effect-helicopter {
+    position: absolute;
+    pointer-events: none;
+    font-size: 65px;
+    animation: helicopterFly var(--duration, 3s) ease-in-out forwards;
+}
+
+@keyframes helicopterFly {
+    0%   { transform: translate(var(--start-tx, -100px), 0) scaleX(var(--dir, 1)); opacity: 0; }
+    8%   { opacity: 1; }
+    92%  { opacity: 1; }
+    100% { transform: translate(var(--end-tx, 110vw), var(--drift, -30px)) scaleX(var(--dir, 1)); opacity: 0; }
+}
+
+/* Speed lines burst */
+.effect-speed-line {
+    position: absolute;
+    height: 3px;
+    border-radius: 2px;
+    pointer-events: none;
+    animation: speedLineShoot var(--duration, 0.4s) ease-out forwards;
+    transform-origin: left center;
+}
+
+@keyframes speedLineShoot {
+    0%   { transform: rotate(var(--angle, 0deg)) scaleX(0); opacity: 1; }
+    40%  { transform: rotate(var(--angle, 0deg)) scaleX(1); opacity: 1; }
+    100% { transform: rotate(var(--angle, 0deg)) scaleX(1) translateX(var(--tx, 300px)); opacity: 0; }
+}
+
+/* Vehicle scatter particles */
+.effect-vehicle-particle {
+    position: absolute;
+    pointer-events: none;
+    font-size: 30px;
+    animation: vehicleScatter var(--duration, 1.2s) ease-out forwards;
+}
+
+@keyframes vehicleScatter {
+    0%   { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+    100% { transform: translate(var(--tx, 100px), var(--ty, -100px)) rotate(var(--rot, 360deg)) scale(0.5); opacity: 0; }
+}
+
+/* Exhaust trail on mouse move */
+.effect-exhaust-trail {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: exhaustTrail 0.9s ease-out forwards;
+    background: radial-gradient(circle, rgba(180, 180, 180, 0.6), rgba(100, 100, 100, 0));
+}
+
+@keyframes exhaustTrail {
+    0%   { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+    100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
+}
+
+/* Screen rumble for big truck/train */
+@keyframes roadRumble {
+    0%, 100% { transform: translate(0, 0); }
+    15% { transform: translate(-5px, 3px); }
+    30% { transform: translate(5px, -3px); }
+    45% { transform: translate(-3px, 5px); }
+    60% { transform: translate(3px, -2px); }
+    75% { transform: translate(-2px, 3px); }
+    90% { transform: translate(2px, -1px); }
+}
+
+.transport-rumble {
+    animation: roadRumble 0.4s ease-out;
+}
+
+/* Airplane flyby */
+.effect-airplane {
+    position: absolute;
+    pointer-events: none;
+    font-size: 60px;
+    animation: airplaneFly var(--duration, 2.5s) linear forwards;
+}
+
+@keyframes airplaneFly {
+    0%   { transform: translate(var(--start-tx, -100px), 0) scaleX(var(--dir, 1)) rotate(var(--tilt, -5deg)); opacity: 0; }
+    8%   { opacity: 1; }
+    92%  { opacity: 1; }
+    100% { transform: translate(var(--end-tx, 110vw), var(--drift, -20px)) scaleX(var(--dir, 1)) rotate(var(--tilt, -5deg)); opacity: 0; }
+}

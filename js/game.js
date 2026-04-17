@@ -4,6 +4,7 @@ const Game = {
     active: false,
     starWarsMode: false,
     dinoMode: false,
+    transportMode: false,
     effectsLayer: null,
     canvas: null,
     ctx: null,
@@ -16,6 +17,7 @@ const Game = {
         Effects.init(this.effectsLayer);
         StarWarsEffects.init(this.effectsLayer);
         DinosaurEffects.init(this.effectsLayer);
+        TransportationEffects.init(this.effectsLayer);
         this._resizeCanvas();
         window.addEventListener('resize', () => this._resizeCanvas());
     },
@@ -25,10 +27,11 @@ const Game = {
         this.canvas.height = window.innerHeight;
     },
 
-    start(starWarsMode, dinoMode) {
+    start(starWarsMode, dinoMode, transportMode) {
         this.active = true;
         this.starWarsMode = starWarsMode;
         this.dinoMode = dinoMode;
+        this.transportMode = transportMode;
         this._enterFullscreen();
         this._bindEvents();
 
@@ -36,6 +39,8 @@ const Game = {
             StarWarsEffects.createStarfield();
         } else if (dinoMode) {
             DinosaurEffects.createJungle();
+        } else if (transportMode) {
+            TransportationEffects.createRoad();
         }
     },
 
@@ -49,12 +54,14 @@ const Game = {
             StarWarsEffects.removeStarfield();
         } else if (this.dinoMode) {
             DinosaurEffects.removeJungle();
+        } else if (this.transportMode) {
+            TransportationEffects.removeRoad();
         }
     },
 
     _cleanup() {
         // Remove all effect elements except persistent backgrounds (handled separately)
-        const effects = this.effectsLayer.querySelectorAll(':not(.starfield-star):not(.jungle-bg-element)');
+        const effects = this.effectsLayer.querySelectorAll(':not(.starfield-star):not(.jungle-bg-element):not(.road-bg-element)');
         effects.forEach(el => el.remove());
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     },
@@ -89,12 +96,14 @@ const Game = {
     _getEffectEngine() {
         if (this.starWarsMode) return StarWarsEffects;
         if (this.dinoMode) return DinosaurEffects;
+        if (this.transportMode) return TransportationEffects;
         return Effects;
     },
 
     _getMode() {
         if (this.starWarsMode) return 'starwars';
         if (this.dinoMode) return 'dino';
+        if (this.transportMode) return 'transport';
         return 'default';
     },
 
