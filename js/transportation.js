@@ -6,6 +6,7 @@ const TransportationEffects = {
 
     init(layer) {
         this.layer = layer;
+        this._boundOnResize = this._onResize.bind(this);
     },
 
     transportColors: ['#ff6b35', '#f7c59f', '#efefd0', '#004e89', '#1a936f', '#c62a47', '#f4d35e', '#ee6c4d'],
@@ -64,6 +65,24 @@ const TransportationEffects = {
     createRoad() {
         if (this.roadCreated) return;
         this.roadCreated = true;
+        this._buildRoadElements();
+        window.addEventListener('resize', this._boundOnResize);
+    },
+
+    removeRoad() {
+        if (!this.roadCreated) return;
+        this.roadCreated = false;
+        this.layer.querySelectorAll('.road-bg-element').forEach(el => el.remove());
+        window.removeEventListener('resize', this._boundOnResize);
+    },
+
+    _onResize() {
+        if (!this.roadCreated) return;
+        this._buildRoadElements();
+    },
+
+    _buildRoadElements() {
+        this.layer.querySelectorAll('.road-bg-element').forEach(el => el.remove());
 
         // Dashed center-line marks
         const dashCount = Math.ceil(window.innerWidth / 120) + 1;
@@ -94,12 +113,6 @@ const TransportationEffects = {
             el.style.opacity = '0.12';
             this.layer.appendChild(el);
         }
-    },
-
-    removeRoad() {
-        if (!this.roadCreated) return;
-        this.roadCreated = false;
-        this.layer.querySelectorAll('.road-bg-element').forEach(el => el.remove());
     },
 
     // ===== Individual Effects =====
@@ -163,7 +176,7 @@ const TransportationEffects = {
             left: pos.x + 'px',
             top: pos.y + 'px',
             fontSize: '60px',
-        }, this.layer, 1200);
+        }, this.layer, 1500);
         vEl.textContent = vehicle;
 
         // Expanding honk rings
@@ -203,7 +216,6 @@ const TransportationEffects = {
         const el = Utils.createEffect('effect-rocket-launch', {
             left: pos.x + 'px',
             top: pos.y + 'px',
-            transform: 'translate(-50%, -50%)',
             '--fly-y': -(window.innerHeight + 100) + 'px',
             '--duration': duration + 's',
         }, this.layer, duration * 1000);
