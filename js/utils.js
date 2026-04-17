@@ -103,7 +103,7 @@ const Utils = {
         letters.forEach((letter, i) => {
             const color = theme === 'starwars'   ? Utils.pick(saberColors)
                         : theme === 'dino'       ? dinoColors[i]
-                        : theme === 'transport'  ? transportColors[i]
+                        : theme === 'transport'  ? transportColors[i % transportColors.length]
                         : Utils.randomBrightColor();
 
             setTimeout(() => {

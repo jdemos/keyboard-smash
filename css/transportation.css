@@ -208,9 +208,3 @@
     92%  { opacity: 1; }
     100% { transform: translate(var(--end-tx, 110vw), var(--drift, -20px)) scaleX(var(--dir, 1)) rotate(var(--tilt, -5deg)); opacity: 0; }
 }
-
-/* Road background persistent elements */
-.road-bg-element {
-    position: absolute;
-    pointer-events: none;
-}
