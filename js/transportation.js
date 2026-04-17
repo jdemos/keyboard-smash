@@ -84,6 +84,16 @@ const TransportationEffects = {
     _buildRoadElements() {
         this.layer.querySelectorAll('.road-bg-element').forEach(el => el.remove());
 
+        this._onResize = () => {
+            if (this.roadCreated) {
+                this.layer.querySelectorAll('.road-bg-element').forEach(el => el.remove());
+                this._buildRoad();
+            }
+        };
+        window.addEventListener('resize', this._onResize);
+    },
+
+    _buildRoad() {
         // Dashed center-line marks
         const dashCount = Math.ceil(window.innerWidth / 120) + 1;
         const roadY = window.innerHeight * 0.72;
