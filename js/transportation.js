@@ -64,7 +64,18 @@ const TransportationEffects = {
     createRoad() {
         if (this.roadCreated) return;
         this.roadCreated = true;
+        this._buildRoad();
 
+        this._onResize = () => {
+            if (this.roadCreated) {
+                this.layer.querySelectorAll('.road-bg-element').forEach(el => el.remove());
+                this._buildRoad();
+            }
+        };
+        window.addEventListener('resize', this._onResize);
+    },
+
+    _buildRoad() {
         // Dashed center-line marks
         const dashCount = Math.ceil(window.innerWidth / 120) + 1;
         const roadY = window.innerHeight * 0.72;
@@ -99,6 +110,10 @@ const TransportationEffects = {
     removeRoad() {
         if (!this.roadCreated) return;
         this.roadCreated = false;
+        if (this._onResize) {
+            window.removeEventListener('resize', this._onResize);
+            this._onResize = null;
+        }
         this.layer.querySelectorAll('.road-bg-element').forEach(el => el.remove());
     },
 
@@ -163,7 +178,7 @@ const TransportationEffects = {
             left: pos.x + 'px',
             top: pos.y + 'px',
             fontSize: '60px',
-        }, this.layer, 1200);
+        }, this.layer, 1500);
         vEl.textContent = vehicle;
 
         // Expanding honk rings
@@ -203,7 +218,6 @@ const TransportationEffects = {
         const el = Utils.createEffect('effect-rocket-launch', {
             left: pos.x + 'px',
             top: pos.y + 'px',
-            transform: 'translate(-50%, -50%)',
             '--fly-y': -(window.innerHeight + 100) + 'px',
             '--duration': duration + 's',
         }, this.layer, duration * 1000);

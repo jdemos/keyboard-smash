@@ -32,11 +32,27 @@ const Home = {
         this.startBtn.addEventListener('click', () => App.startGame());
     },
 
+    _getStoredBoolean(key) {
+        try {
+            return localStorage.getItem(key) === 'true';
+        } catch (e) {
+            return false;
+        }
+    },
+
+    _setStoredItem(key, value) {
+        try {
+            localStorage.setItem(key, value);
+        } catch (e) {
+            // localStorage unavailable; ignore
+        }
+    },
+
     _loadPreferences() {
-        const darkMode = localStorage.getItem('keyboard-smash-dark') === 'true';
-        const starWars = localStorage.getItem('keyboard-smash-starwars') === 'true';
-        const dino = localStorage.getItem('keyboard-smash-dino') === 'true';
-        const transport = localStorage.getItem('keyboard-smash-transport') === 'true';
+        const darkMode = this._getStoredBoolean('keyboard-smash-dark');
+        const starWars = this._getStoredBoolean('keyboard-smash-starwars');
+        const dino = this._getStoredBoolean('keyboard-smash-dino');
+        const transport = this._getStoredBoolean('keyboard-smash-transport');
 
         this.themeToggle.checked = darkMode;
 
@@ -68,7 +84,7 @@ const Home = {
     _onThemeChange() {
         const dark = this.themeToggle.checked;
         this._applyTheme(dark);
-        localStorage.setItem('keyboard-smash-dark', dark);
+        this._setStoredItem('keyboard-smash-dark', dark);
     },
 
     _onStarWarsChange() {
@@ -76,13 +92,13 @@ const Home = {
         if (sw) {
             this.dinoToggle.checked = false;
             this._applyDino(false);
-            localStorage.setItem('keyboard-smash-dino', false);
+            this._setStoredItem('keyboard-smash-dino', false);
             this.transportToggle.checked = false;
             this._applyTransport(false);
-            localStorage.setItem('keyboard-smash-transport', false);
+            this._setStoredItem('keyboard-smash-transport', false);
         }
         this._applyStarWars(sw);
-        localStorage.setItem('keyboard-smash-starwars', sw);
+        this._setStoredItem('keyboard-smash-starwars', sw);
     },
 
     _onDinoChange() {
@@ -90,13 +106,13 @@ const Home = {
         if (dino) {
             this.starwarsToggle.checked = false;
             this._applyStarWars(false);
-            localStorage.setItem('keyboard-smash-starwars', false);
+            this._setStoredItem('keyboard-smash-starwars', false);
             this.transportToggle.checked = false;
             this._applyTransport(false);
-            localStorage.setItem('keyboard-smash-transport', false);
+            this._setStoredItem('keyboard-smash-transport', false);
         }
         this._applyDino(dino);
-        localStorage.setItem('keyboard-smash-dino', dino);
+        this._setStoredItem('keyboard-smash-dino', dino);
     },
 
     _onTransportChange() {
@@ -104,13 +120,13 @@ const Home = {
         if (transport) {
             this.starwarsToggle.checked = false;
             this._applyStarWars(false);
-            localStorage.setItem('keyboard-smash-starwars', false);
+            this._setStoredItem('keyboard-smash-starwars', false);
             this.dinoToggle.checked = false;
             this._applyDino(false);
-            localStorage.setItem('keyboard-smash-dino', false);
+            this._setStoredItem('keyboard-smash-dino', false);
         }
         this._applyTransport(transport);
-        localStorage.setItem('keyboard-smash-transport', transport);
+        this._setStoredItem('keyboard-smash-transport', transport);
     },
 
     _onMuteChange() {
