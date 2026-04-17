@@ -1,0 +1,40 @@
+name: Label Issues
+
+on:
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add labels to open issues
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const labels = {
+              30: ['bug'],
+              27: ['good first issue'],
+              26: ['bug'],
+              25: ['wontfix'],
+              23: ['bug'],
+              22: ['enhancement'],
+              21: ['enhancement'],
+              20: ['enhancement'],
+              19: ['enhancement'],
+              18: ['enhancement'],
+              17: ['invalid'],
+              12: ['enhancement'],
+            };
+
+            for (const [issue_number, issue_labels] of Object.entries(labels)) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: parseInt(issue_number),
+                labels: issue_labels,
+              });
+              console.log(`Added labels [${issue_labels}] to issue #${issue_number}`);
+            }
