@@ -119,13 +119,24 @@ const Game = {
             return;
         }
 
-        // Prevent all default browser actions
+        // Prevent all default browser/OS actions (e.g. Spotlight, browser shortcuts)
         e.preventDefault();
         e.stopPropagation();
 
         Audio.init();
         Audio.playKey(this._getMode());
         this._getEffectEngine().onKey(e);
+    },
+
+    _onKeyUp(e) {
+        if (!this.active) return;
+
+        // Allow parent exit shortcut to pass through
+        if (e.ctrlKey && e.shiftKey && e.key === 'Escape') return;
+
+        // Prevent OS/browser shortcuts that activate on key release
+        e.preventDefault();
+        e.stopPropagation();
     },
 
     _onMouseDown(e) {
@@ -198,9 +209,13 @@ const Game = {
 
     _boundHandlers: {},
 
+    // Events registered without capture (pointer/touch/misc)
+    _pointerEvents: ['mousedown', 'mousemove', 'wheel', 'contextmenu', 'touchstart', 'touchmove', 'touchend', 'fullscreenchange'],
+
     _bindEvents() {
         this._boundHandlers = {
             keydown: (e) => this._onKeyDown(e),
+            keyup: (e) => this._onKeyUp(e),
             mousedown: (e) => this._onMouseDown(e),
             mousemove: (e) => this._onMouseMove(e),
             wheel: (e) => this._onWheel(e),
@@ -211,15 +226,25 @@ const Game = {
             fullscreenchange: () => this._handleFullscreenChange(),
         };
 
-        Object.entries(this._boundHandlers).forEach(([event, handler]) => {
-            document.addEventListener(event, handler, { passive: false });
+        // Key events use capture:true so our handler fires before the browser's own
+        // shortcut processing, blocking OS-level shortcuts like Spotlight (Cmd+Space)
+        document.addEventListener('keydown', this._boundHandlers.keydown, { capture: true, passive: false });
+        document.addEventListener('keyup', this._boundHandlers.keyup, { capture: true, passive: false });
+
+        this._pointerEvents.forEach(event => {
+            document.addEventListener(event, this._boundHandlers[event], { passive: false });
         });
     },
 
     _unbindEvents() {
-        Object.entries(this._boundHandlers).forEach(([event, handler]) => {
-            document.removeEventListener(event, handler);
+        // Key events were registered with capture:true — must match on removal
+        document.removeEventListener('keydown', this._boundHandlers.keydown, { capture: true });
+        document.removeEventListener('keyup', this._boundHandlers.keyup, { capture: true });
+
+        this._pointerEvents.forEach(event => {
+            document.removeEventListener(event, this._boundHandlers[event]);
         });
+
         this._boundHandlers = {};
     },
 };
