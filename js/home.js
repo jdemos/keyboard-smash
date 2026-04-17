@@ -4,6 +4,7 @@ const Home = {
     themeToggle: null,
     starwarsToggle: null,
     dinoToggle: null,
+    transportToggle: null,
     muteToggle: null,
     themeIcon: null,
     muteIcon: null,
@@ -13,6 +14,7 @@ const Home = {
         this.themeToggle = document.getElementById('theme-toggle');
         this.starwarsToggle = document.getElementById('starwars-toggle');
         this.dinoToggle = document.getElementById('dino-toggle');
+        this.transportToggle = document.getElementById('transport-toggle');
         this.muteToggle = document.getElementById('mute-toggle');
         this.themeIcon = document.getElementById('theme-icon');
         this.muteIcon = document.getElementById('mute-icon');
@@ -25,6 +27,7 @@ const Home = {
         this.themeToggle.addEventListener('change', () => this._onThemeChange());
         this.starwarsToggle.addEventListener('change', () => this._onStarWarsChange());
         this.dinoToggle.addEventListener('change', () => this._onDinoChange());
+        this.transportToggle.addEventListener('change', () => this._onTransportChange());
         this.muteToggle.addEventListener('change', () => this._onMuteChange());
         this.startBtn.addEventListener('click', () => App.startGame());
     },
@@ -33,19 +36,28 @@ const Home = {
         const darkMode = localStorage.getItem('keyboard-smash-dark') === 'true';
         const starWars = localStorage.getItem('keyboard-smash-starwars') === 'true';
         const dino = localStorage.getItem('keyboard-smash-dino') === 'true';
+        const transport = localStorage.getItem('keyboard-smash-transport') === 'true';
 
         this.themeToggle.checked = darkMode;
-        // Only one game theme at a time; dino takes precedence if both saved
-        if (dino) {
+
+        // Only one game theme at a time; priority: transport > dino > starwars
+        if (transport) {
+            this.transportToggle.checked = true;
+            this.dinoToggle.checked = false;
+            this.starwarsToggle.checked = false;
+        } else if (dino) {
             this.dinoToggle.checked = true;
             this.starwarsToggle.checked = false;
+            this.transportToggle.checked = false;
         } else {
             this.starwarsToggle.checked = starWars;
             this.dinoToggle.checked = false;
+            this.transportToggle.checked = false;
         }
         this._applyTheme(darkMode);
         this._applyStarWars(this.starwarsToggle.checked);
         this._applyDino(this.dinoToggle.checked);
+        this._applyTransport(this.transportToggle.checked);
 
         // Load mute preference (toggle ON = sound enabled, so muted = !checked)
         const muted = Audio.loadMutePreference();
@@ -65,6 +77,9 @@ const Home = {
             this.dinoToggle.checked = false;
             this._applyDino(false);
             localStorage.setItem('keyboard-smash-dino', false);
+            this.transportToggle.checked = false;
+            this._applyTransport(false);
+            localStorage.setItem('keyboard-smash-transport', false);
         }
         this._applyStarWars(sw);
         localStorage.setItem('keyboard-smash-starwars', sw);
@@ -76,9 +91,26 @@ const Home = {
             this.starwarsToggle.checked = false;
             this._applyStarWars(false);
             localStorage.setItem('keyboard-smash-starwars', false);
+            this.transportToggle.checked = false;
+            this._applyTransport(false);
+            localStorage.setItem('keyboard-smash-transport', false);
         }
         this._applyDino(dino);
         localStorage.setItem('keyboard-smash-dino', dino);
+    },
+
+    _onTransportChange() {
+        const transport = this.transportToggle.checked;
+        if (transport) {
+            this.starwarsToggle.checked = false;
+            this._applyStarWars(false);
+            localStorage.setItem('keyboard-smash-starwars', false);
+            this.dinoToggle.checked = false;
+            this._applyDino(false);
+            localStorage.setItem('keyboard-smash-dino', false);
+        }
+        this._applyTransport(transport);
+        localStorage.setItem('keyboard-smash-transport', transport);
     },
 
     _onMuteChange() {
@@ -101,6 +133,10 @@ const Home = {
         document.documentElement.setAttribute('data-dino', enabled);
     },
 
+    _applyTransport(enabled) {
+        document.documentElement.setAttribute('data-transport', enabled);
+    },
+
     _applyMute(muted) {
         this.muteIcon.textContent = muted ? '🔇' : '🔊';
     },
@@ -111,5 +147,9 @@ const Home = {
 
     isDinoEnabled() {
         return this.dinoToggle.checked;
+    },
+
+    isTransportEnabled() {
+        return this.transportToggle.checked;
     },
 };
