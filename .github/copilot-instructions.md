@@ -66,7 +66,8 @@ keyboard-smash/
 │   ├── home.css                # Home screen styles
 │   ├── game.css                # In-game animations and effects
 │   ├── starwars.css            # Star Wars theme styles
-│   └── dinosaur.css            # Dinosaur theme styles
+│   ├── dinosaur.css            # Dinosaur theme styles
+│   └── transportation.css      # Transportation theme styles
 ├── js/
 │   ├── app.js                  # App controller: manages screen transitions (home ↔ game)
 │   ├── game.js                 # Core game engine: events, fullscreen, mode selection
@@ -74,6 +75,8 @@ keyboard-smash/
 │   ├── effects.js              # Default visual effects library (11+ effect types)
 │   ├── starwars.js             # Star Wars-themed effects library
 │   ├── dinosaur.js             # Dinosaur-themed effects library
+│   ├── transportation.js       # Transportation-themed effects library
+│   ├── audio.js                # Web Audio API sound engine (synthesized, no audio files)
 │   └── utils.js                # Shared utilities: random helpers, DOM element creation
 └── index.html                  # Single HTML entry point
 ```
@@ -100,7 +103,7 @@ User Input (key / click / touch)
     ↓
 game.js event handler (_onKey, _onClick, _onMove)
     ↓
-_getEffectEngine() → returns Effects | StarWarsEffects | DinosaurEffects
+_getEffectEngine() → returns Effects | StarWarsEffects | DinosaurEffects | TransportationEffects
     ↓
 effectEngine.onKey(char, position) / .onClick(position) / .onMove(position)
     ↓
@@ -113,20 +116,26 @@ Element auto-removed after animation duration (setTimeout)
 
 ### Effect Engine Strategy
 
-Three interchangeable effect engines share the same interface:
+Four interchangeable effect engines share the same interface:
 
 | Engine | File | Activated when |
 |--------|------|----------------|
 | `Effects` | `js/effects.js` | Default (no theme selected) |
 | `StarWarsEffects` | `js/starwars.js` | Star Wars mode is on |
 | `DinosaurEffects` | `js/dinosaur.js` | Dinosaur mode is on |
+| `TransportationEffects` | `js/transportation.js` | Transportation mode is on |
 
 Selection logic in `game.js`:
 ```javascript
-const effectEngine = this.starWarsMode ? StarWarsEffects
-                   : this.dinoMode    ? DinosaurEffects
-                   : Effects;
+_getEffectEngine() {
+    if (this.starWarsMode) return StarWarsEffects;
+    if (this.dinoMode) return DinosaurEffects;
+    if (this.transportMode) return TransportationEffects;
+    return Effects;
+}
 ```
+
+The active mode string (`'starwars'` | `'dino'` | `'transport'` | `'default'`) is returned by `_getMode()` and passed to `Audio.playKey/playClick/playMove(mode)`.
 
 ### State Persistence
 
@@ -137,8 +146,10 @@ User preferences are stored in `localStorage`:
 | `keyboard-smash-dark` | `"true"/"false"` | Dark mode |
 | `keyboard-smash-starwars` | `"true"/"false"` | Star Wars theme active |
 | `keyboard-smash-dino` | `"true"/"false"` | Dinosaur theme active |
+| `keyboard-smash-transport` | `"true"/"false"` | Transportation theme active |
+| `keyboard-smash-mute` | `"true"/"false"` | Sound muted |
 
-Only one theme can be active at a time. Enabling one theme disables the other.
+Only one game theme can be active at a time. Enabling one disables the others. On load, priority is: transport > dino > starwars.
 
 ### Fullscreen Behavior
 
@@ -148,10 +159,22 @@ Only one theme can be active at a time. Enabling one theme disables the other.
 
 ---
 
+## Audio Module (`js/audio.js`)
+
+`Audio` uses the Web Audio API to synthesize sounds — there are no audio files. Key rules:
+
+- **`Audio.init()` must only be called inside a user gesture** (keydown, mousedown, touchstart) due to browser autoplay policy. It creates/resumes the `AudioContext`.
+- Sound triggers: `Audio.playKey(mode)`, `Audio.playClick(mode)`, `Audio.playMove(mode)` — all accept the mode string from `Game._getMode()`.
+- Move sounds play only ~15% of the time to stay ambient.
+- Mute state is stored in `localStorage` under `keyboard-smash-mute`. Read via `Audio.loadMutePreference()`, write via `Audio.setMuted(value)`.
+- If `AudioContext` is unavailable, `Audio` degrades silently — never throw or alert.
+
+---
+
 ## CSS Conventions
 
 - **CSS Custom Properties (variables)** power all theming: `--bg-primary`, `--text-primary`, `--accent`, etc. Defined in `main.css`.
-- **Data attributes** control theme state on the `<body>` or root element: `[data-theme="dark"]`, `[data-starwars="true"]`, `[data-dino="true"]`.
+- **Data attributes** control theme state on the `<html>` element: `[data-theme="dark"]`, `[data-starwars="true"]`, `[data-dino="true"]`, `[data-transport="true"]`.
 - **Per-element CSS variables** drive animations: `--tx`, `--ty`, `--duration`, `--angle`, `--color` are set inline via JavaScript and consumed by `@keyframes` rules in CSS.
 - **Keyframe naming**: camelCase — e.g., `@keyframes keyPop`, `@keyframes colorExplosion`.
 
@@ -218,7 +241,9 @@ Manual trigger is also available via `workflow_dispatch`.
 - **Do not use ES modules** (`import`/`export`) — scripts are loaded globally via `<script>` tags in `index.html`.
 - **Effect cleanup**: Always pass the animation duration to `Utils.createEffect()` so the element is removed after the animation ends. Do not leave orphaned DOM nodes.
 - **Mouse move throttling**: The `_onMove` handler throttles to ~30fps (33ms minimum interval) to avoid performance issues. Maintain this pattern.
-- **Theme exclusivity**: When activating one theme, deactivate the other. Enforce this in `home.js`.
+- **Theme exclusivity**: When activating one theme, deactivate the other two. Enforce this in `home.js`.
+- **Audio initialization**: Call `Audio.init()` only inside user gesture handlers (keydown, mousedown, touchstart). Never call it at startup outside a gesture.
+- **Adding a new theme**: create `js/<theme>.js` (object with `init(layer)`, `onKey(e)`, `onClick(x,y)`, `onMove(x,y)`), `css/<theme>.css`, add a toggle to `index.html`, wire exclusivity in `home.js`, add a case to `Game._getEffectEngine()` and `Game._getMode()`, add sounds to `Audio.playKey/playClick/playMove`, and register background element class in `Game._cleanup()`'s selector exclusion list.
 
 ---
 
