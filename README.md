@@ -22,6 +22,7 @@ That's it! Every key does something different. Try them all!
 - **Light & Dark mode** — easy on the eyes, day or night 🌙☀️
 - **Star Wars theme** ⚔️ — lightsabers, starfields, and more!
 - **Dinosaur theme** 🦕 — roars, volcanoes, and prehistoric creatures!
+- **Transportation theme** 🚗 — vehicles, trains, rockets, and road signs!
 
 ---
 
@@ -29,7 +30,7 @@ That's it! Every key does something different. Try them all!
 
 - **To exit fullscreen:** Press **Ctrl + Shift + Escape**
 - **No installs needed** — it's a simple webpage, just open and play!
-- There's no sound, so it's safe to play anywhere 🔇
+- **Sound effects** are on by default — toggle them off with the 🔊 switch on the home screen if you need silence 🔇
 
 ---
 
