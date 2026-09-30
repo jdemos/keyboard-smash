@@ -35,6 +35,7 @@ const Utils = {
     createEffect(className, styles, parent, duration = 2000) {
         const el = document.createElement('div');
         el.className = className;
+        el.classList.add('js-effect');
         Object.assign(el.style, styles);
         parent.appendChild(el);
         setTimeout(() => el.remove(), duration);

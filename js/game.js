@@ -60,8 +60,7 @@ const Game = {
     },
 
     _cleanup() {
-        // Remove all effect elements except persistent backgrounds (handled separately)
-        const effects = this.effectsLayer.querySelectorAll(':not(.starfield-star):not(.jungle-bg-element):not(.road-bg-element)');
+        const effects = this.effectsLayer.querySelectorAll('.js-effect');
         effects.forEach(el => el.remove());
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     },
