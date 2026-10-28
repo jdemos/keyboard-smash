@@ -23,6 +23,7 @@ That's it! Every key does something different. Try them all!
 - **Star Wars theme** ⚔️ — lightsabers, starfields, and more!
 - **Dinosaur theme** 🦕 — roars, volcanoes, and prehistoric creatures!
 - **Transportation theme** 🚗 — cars, trains, planes, and more!
+- **Space theme** 🪐 — planets, astronauts, rockets, and cosmic starfields!
 
 ---
 

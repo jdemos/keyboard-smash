@@ -230,6 +230,22 @@
     content: ' 🦕 Roar into adventure!';
 }
 
+/* ===== Space Home Theme Override ===== */
+[data-space="true"] .home-title {
+    background: linear-gradient(135deg, #5ce1e6, #7f5af0, #ff70a6);
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+[data-space="true"] .start-button {
+    background: linear-gradient(135deg, #24246b, #7f5af0);
+    box-shadow: 0 4px 20px rgba(127, 90, 240, 0.45);
+}
+
+[data-space="true"] .home-subtitle::after {
+    content: ' 🚀 Blast off into adventure!';
+}
+
 /* ===== Mobile Responsive ===== */
 @media (max-width: 480px) {
     .home-container {
