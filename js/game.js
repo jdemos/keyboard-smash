@@ -5,6 +5,7 @@ const Game = {
     starWarsMode: false,
     dinoMode: false,
     transportMode: false,
+    spaceMode: false,
     effectsLayer: null,
     canvas: null,
     ctx: null,
@@ -18,6 +19,7 @@ const Game = {
         StarWarsEffects.init(this.effectsLayer);
         DinosaurEffects.init(this.effectsLayer);
         TransportationEffects.init(this.effectsLayer);
+        SpaceEffects.init(this.effectsLayer);
         this._resizeCanvas();
         window.addEventListener('resize', () => this._resizeCanvas());
     },
@@ -27,15 +29,18 @@ const Game = {
         this.canvas.height = window.innerHeight;
     },
 
-    start(starWarsMode, dinoMode, transportMode) {
+    start(starWarsMode, dinoMode, transportMode, spaceMode) {
         this.active = true;
         this.starWarsMode = starWarsMode;
         this.dinoMode = dinoMode;
         this.transportMode = transportMode;
+        this.spaceMode = spaceMode;
         this._enterFullscreen();
         this._bindEvents();
 
-        if (starWarsMode) {
+        if (spaceMode) {
+            SpaceEffects.createCosmos();
+        } else if (starWarsMode) {
             StarWarsEffects.createStarfield();
         } else if (dinoMode) {
             DinosaurEffects.createJungle();
@@ -50,7 +55,9 @@ const Game = {
         this._exitFullscreen();
         this._cleanup();
 
-        if (this.starWarsMode) {
+        if (this.spaceMode) {
+            SpaceEffects.removeCosmos();
+        } else if (this.starWarsMode) {
             StarWarsEffects.removeStarfield();
         } else if (this.dinoMode) {
             DinosaurEffects.removeJungle();
@@ -93,6 +100,7 @@ const Game = {
     },
 
     _getEffectEngine() {
+        if (this.spaceMode) return SpaceEffects;
         if (this.starWarsMode) return StarWarsEffects;
         if (this.dinoMode) return DinosaurEffects;
         if (this.transportMode) return TransportationEffects;
@@ -100,6 +108,7 @@ const Game = {
     },
 
     _getMode() {
+        if (this.spaceMode) return 'space';
         if (this.starWarsMode) return 'starwars';
         if (this.dinoMode) return 'dino';
         if (this.transportMode) return 'transport';

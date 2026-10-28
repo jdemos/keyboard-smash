@@ -88,7 +88,7 @@ const Utils = {
     flowers: ['🌸', '🌺', '🌻', '🌹', '🌷', '💐', '🌼', '🏵️'],
 
     // Easter egg: display "LEO" in big animated letters
-    // theme: 'default' | 'starwars' | 'dino' | 'transport'
+    // theme: 'default' | 'starwars' | 'dino' | 'transport' | 'space'
     spacebarLEO(layer, theme = 'default') {
         const letters = ['L', 'E', 'O'];
         const vw = window.innerWidth;
@@ -97,6 +97,7 @@ const Utils = {
         const saberColors = ['#4fc3f7', '#ff1744', '#76ff03', '#7c4dff', '#ffff00', '#ff9100'];
         const dinoColors = ['#4caf50', '#ff9800', '#ff5722'];
         const transportColors = ['#ff6b35', '#004e89', '#1a936f'];
+        const spaceColors = ['#5ce1e6', '#ff70a6', '#ffd166'];
         const className = theme === 'starwars'
             ? 'effect-leo-letter effect-leo-letter-sw'
             : 'effect-leo-letter';
@@ -105,6 +106,7 @@ const Utils = {
             const color = theme === 'starwars'   ? Utils.pick(saberColors)
                         : theme === 'dino'       ? dinoColors[i]
                         : theme === 'transport'  ? transportColors[i % transportColors.length]
+                        : theme === 'space'      ? spaceColors[i]
                         : Utils.randomBrightColor();
 
             setTimeout(() => {
@@ -119,6 +121,8 @@ const Utils = {
                     styles.textShadow = `0 0 20px ${color}, 0 0 40px ${color}`;
                 } else if (theme === 'transport') {
                     styles.textShadow = `0 4px 12px rgba(0,0,0,0.4), 0 0 24px ${color}`;
+                } else if (theme === 'space') {
+                    styles.textShadow = `0 0 20px ${color}, 0 0 50px ${color}`;
                 }
                 const el = Utils.createEffect(className, styles, layer, 2500);
                 el.textContent = letter;

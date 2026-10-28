@@ -50,10 +50,12 @@ const Audio = {
 
     // ===== Public sound triggers =====
 
-    // Called on every key press; mode is 'starwars' | 'dino' | 'default'
+    // Called on every key press
     playKey(mode) {
         if (!this._isReady()) return;
-        if (mode === 'starwars') {
+        if (mode === 'space') {
+            this._playSpaceChime();
+        } else if (mode === 'starwars') {
             this._playSaberHum();
         } else if (mode === 'dino') {
             this._playDinoStomp();
@@ -65,7 +67,9 @@ const Audio = {
     // Called on mouse-down / tap
     playClick(mode) {
         if (!this._isReady()) return;
-        if (mode === 'starwars') {
+        if (mode === 'space') {
+            this._playRocketLaunch();
+        } else if (mode === 'starwars') {
             this._playBlasterPew();
         } else if (mode === 'dino') {
             this._playDinoGrowl();
@@ -79,7 +83,9 @@ const Audio = {
         if (!this._isReady()) return;
         // Only play ~15% of the time so it stays ambient, not overwhelming
         if (Math.random() > 0.15) return;
-        if (mode === 'starwars') {
+        if (mode === 'space') {
+            this._playCosmicPing();
+        } else if (mode === 'starwars') {
             this._playHyperswish();
         } else if (mode === 'dino') {
             this._playFootstep();
@@ -258,6 +264,58 @@ const Audio = {
 
         noise.start(now);
         noise.stop(now + duration);
+    },
+
+    // ===== Space theme sounds =====
+
+    _playSpaceChime() {
+        const ctx = this.ctx;
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(520, now);
+        osc.frequency.exponentialRampToValueAtTime(1040, now + 0.35);
+        gain.gain.setValueAtTime(0.18, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+        osc.start(now);
+        osc.stop(now + 0.5);
+    },
+
+    _playRocketLaunch() {
+        const ctx = this.ctx;
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(90, now);
+        osc.frequency.exponentialRampToValueAtTime(700, now + 0.4);
+        gain.gain.setValueAtTime(0.16, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+        osc.start(now);
+        osc.stop(now + 0.45);
+    },
+
+    _playCosmicPing() {
+        const ctx = this.ctx;
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(1200, now);
+        gain.gain.setValueAtTime(0.035, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+        osc.start(now);
+        osc.stop(now + 0.1);
     },
 
     // ===== Dinosaur theme sounds =====
