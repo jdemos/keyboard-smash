@@ -12,7 +12,7 @@ const StarWarsEffects = {
 
     keyEffects: [
         'lightsaberSlash', 'hyperspaceJump', 'blasterBolts',
-        'characterSilhouette', 'deathStarBeam', 'forcePush'
+        'characterSilhouette', 'deathStarBeam', 'forcePush', 'shipFlyby'
     ],
 
     clickEffects: [

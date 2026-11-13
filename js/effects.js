@@ -16,7 +16,7 @@ const Effects = {
 
     clickEffects: [
         'colorExplosion', 'rippleWave', 'confettiCannon', 'growingFlower',
-        'spiralPattern', 'bubblePop'
+        'spiralPattern', 'bubblePop', 'bouncingBalls'
     ],
 
     moveEffects: ['rainbowTrail'],
